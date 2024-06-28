@@ -29,7 +29,6 @@ PRODUCT_VIRTUAL_AB_OTA := true
 
 # Audio
 PRODUCT_VENDOR_PROPERTIES += \
-    ro.vendor.audio.policy.engine.odm=true \
     ro.vendor.audio.spk.stereo=true \
     ro.vendor.audio.us.proximity=true
 
@@ -37,7 +36,7 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/audio/,$(TARGET_COPY_OUT_VENDOR)/etc)
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/audio/mixer_paths_bengal_idp.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_idp_india.xml
+    $(LOCAL_PATH)/configs/audio/mixer_paths.xml:$(TARGET_COPY_OUT_VENDOR)/etc/mixer_paths_idp_india.xml
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2400
@@ -56,32 +55,25 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.consumerir.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.consumerir.xml
 
 # Display
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    debug.sf.frame_rate_multiple_threshold=60 \
-    ro.surface_flinger.set_touch_timer_ms=200
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/init/init.qti.display_boot.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.display_boot.sh
 
-PRODUCT_ODM_PROPERTIES += \
-    vendor.display.disable_layer_stitch=1 \
-    vendor.display.enable_rounded_corner=0
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.surface_flinger.set_display_power_timer_ms=1000 \
+    ro.surface_flinger.set_idle_timer_ms=500 \
+    ro.surface_flinger.set_touch_timer_ms=800 \
+    ro.surface_flinger.use_content_detection_for_refresh_rate=true
 
 PRODUCT_VENDOR_PROPERTIES += \
-    vendor.display.defer_fps_frame_count=2
+    vendor.display.defer_fps_frame_count=2 \
+    vendor.display.override_doze_mode=1
 
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.3-service.xiaomi
 
-PRODUCT_VENDOR_PROPERTIES += \
+PRODUCT_SYSTEM_PROPERTIES += \
     ro.hardware.fp.sideCap=true
-
-# Kernel
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)-kernel/kernel
-
-PRODUCT_COPY_FILES += \
-    $(TARGET_PREBUILT_KERNEL):kernel \
-    $(call find-copy-subdir-files,*,$(LOCAL_PATH)-kernel/vendor-modules,$(TARGET_COPY_OUT_VENDOR)/lib/modules)
-
-PRODUCT_VENDOR_KERNEL_HEADERS += $(LOCAL_PATH)-kernel/kernel-headers
 
 # Media
 PRODUCT_ODM_PROPERTIES += \
@@ -109,6 +101,7 @@ PRODUCT_SYSTEM_PROPERTIES += \
 
 # Overlays
 PRODUCT_PACKAGES += \
+    AOSPSpesFrameworksOverlay \
     SpesFrameworksOverlay \
     SpesSettingsOverlay \
     SpesSystemUIOverlay \
@@ -119,10 +112,11 @@ PRODUCT_PACKAGES += \
 
 # Parts
 PRODUCT_PACKAGES += \
-    RefreshRateParts
+    SpesParts
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/parts/privapp-permissions-refresh-rate-parts.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-refresh-rate-parts.xml
+    $(LOCAL_PATH)/parts/privapp-permissions-spes-parts.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-spes-parts.xml \
+    $(LOCAL_PATH)/parts/init.spesxiaomiparts.rc:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/init/init.spesxiaomiparts.rc
 
 # Rootdir / Init files
 PRODUCT_PACKAGES += \

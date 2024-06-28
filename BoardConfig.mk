@@ -1,3 +1,6 @@
+
+
+
 # Copyright (C) 2023 Paranoid Android
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +29,22 @@ TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_spes
 TARGET_RECOVERY_DEVICE_MODULES := libinit_spes
 
 # Kernel
-BOARD_MKBOOTIMG_ARGS += --dtb $(DEVICE_PATH)-kernel/dtb.img
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+TARGET_KERNEL_CLANG_VERSION := r450784e
+TARGET_KERNEL_CONFIG := vendor/spes-perf_defconfig
+TARGET_KERNEL_SOURCE := kernel/xiaomi/sm6225
 
 # OTA assert
 TARGET_OTA_ASSERT_DEVICE := spes,spesn
 
 # Screen density
 TARGET_SCREEN_DENSITY := 440
+
+# Sepolicy
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
+
 
 # Inherit from the proprietary version
 include vendor/xiaomi/spes/BoardConfigVendor.mk

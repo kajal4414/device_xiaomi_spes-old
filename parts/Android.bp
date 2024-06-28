@@ -1,5 +1,5 @@
 android_app {
-    name: "RefreshRateParts",
+    name: "SpesParts",
 
     srcs: ["src/**/*.java"],
 
@@ -10,7 +10,6 @@ android_app {
 
     static_libs: [
         "androidx.core_core",
-        "androidx.preference_preference",
         "org.pixelexperience.settings.resources",
         "SettingsLib",
     ],

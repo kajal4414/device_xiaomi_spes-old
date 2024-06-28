@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := $(call my-dir)
+on boot
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display-primary/hbm
+    chmod 0660 /sys/devices/platform/soc/soc:qcom,dsi-display-primary/hbm
 
-ifeq ($(TARGET_DEVICE),spes)
+on property:persist.oled.hbm_mode=*
+    write /sys/devices/platform/soc/soc:qcom,dsi-display-primary/hbm ${persist.oled.hbm_mode}
 
-include $(call all-makefiles-under,$(LOCAL_PATH))
-
-include $(CLEAR_VARS)
-
-endif
